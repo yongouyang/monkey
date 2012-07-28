@@ -1,5 +1,7 @@
 package org.monkey.server
 
+import org.monkey.common.utils.SystemPreferencesImpl
+
 
 class MongoDbMonitoringServer implements InertialComponent {
 
@@ -31,7 +33,8 @@ class MongoDbMonitoringServer implements InertialComponent {
     }
 
     public static void main(String[] args) {
-        def server = new MongoDbMonitoringServer("Local")
+        def server = new MongoDbMonitoringServer("TESTING")
+        System.setProperty(SystemPreferencesImpl.MONKEY_ENV, "TESTING")
 
         Runtime.getRuntime().addShutdownHook(new Thread() {
             @Override
