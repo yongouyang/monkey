@@ -1,4 +1,4 @@
-package org.monkey.common.utils;
+package org.monkey.common.utils.config;
 
 import org.apache.commons.lang.StringUtils;
 import org.springframework.context.annotation.Scope;
@@ -9,6 +9,8 @@ import java.util.Properties;
 import java.util.ResourceBundle;
 import java.util.Set;
 import java.util.regex.Pattern;
+
+import static org.monkey.common.utils.config.PropertyUtils.toProperties;
 
 @Scope("singleton")
 @Component
@@ -29,14 +31,6 @@ public class SystemPreferencesImpl implements SystemPreferences {
         // load default properties
         ResourceBundle defaultBundle = ResourceBundle.getBundle("MonkeyEnvironment-Defaults");
         mergeToSystemProperties(toProperties(defaultBundle));
-    }
-
-    private Properties toProperties(ResourceBundle resourceBundle) {
-        Properties properties = new Properties();
-        for (String key : resourceBundle.keySet()) {
-            properties.setProperty(key, resourceBundle.getString(key));
-        }
-        return properties;
     }
 
     private void mergeToSystemProperties(Properties properties) {

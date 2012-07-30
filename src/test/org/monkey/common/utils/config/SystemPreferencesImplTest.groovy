@@ -1,4 +1,4 @@
-package org.monkey.common.utils
+package org.monkey.common.utils.config
 
 import org.junit.Before
 import org.junit.Test

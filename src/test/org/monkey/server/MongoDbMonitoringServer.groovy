@@ -1,6 +1,6 @@
 package org.monkey.server
 
-import org.monkey.common.utils.SystemPreferencesImpl
+import org.monkey.common.utils.config.SystemPreferencesImpl
 
 
 class MongoDbMonitoringServer implements InertialComponent {
