@@ -1,16 +1,14 @@
 package org.monkey.server;
 
-import org.monkey.server.servlet.SpringApplicationContextHolder;
-import org.mortbay.jetty.Server;
-import org.mortbay.jetty.servlet.Context;
-import org.mortbay.jetty.handler.ContextHandlerCollection;
-import javax.servlet.Servlet;
-import org.mortbay.jetty.servlet.ServletHolder;
-import org.monkey.server.handler.PingHandler;
 import org.monkey.server.handler.SimpleServletRequestHandler;
 import org.monkey.server.servlet.JsonServletAdapter;
+import org.mortbay.jetty.Server;
+import org.mortbay.jetty.handler.ContextHandlerCollection;
 import org.mortbay.jetty.handler.DefaultHandler;
-import org.springframework.web.context.WebApplicationContext;
+import org.mortbay.jetty.servlet.Context;
+import org.mortbay.jetty.servlet.ServletHolder;
+
+import javax.servlet.Servlet;
 
 
 public class JettyServer implements InertialComponent {
