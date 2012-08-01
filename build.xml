@@ -1,0 +1,250 @@
+<project name="monkey" default="quick-tests" basedir=".">
+
+    <description>Monkey</description>
+
+    <property name="location.bin" value="${basedir}/bin"/>
+    <property name="location.conf" value="${basedir}/conf"/>
+
+    <property name="location.lib" value="${basedir}/lib"/>
+    <property name="location.src" value="${basedir}/src/main"/>
+    <property name="location.src.test" value="${basedir}/src/test"/>
+    <property name="location.src.test.integration" value="${basedir}/src/test-integration"/>
+    <property name="location.src.test.selenium" value="${basedir}/src/test-selenium"/>
+
+    <property name="location.build" value="${basedir}/build"/>
+    <property name="location.logs" value="${basedir}/logs"/>
+    <property name="location.classes" value="${location.build}/classes"/>
+    <property name="location.test.classes" value="${location.build}/test-classes"/>
+    <property name="location.dist" value="${location.build}/dist"/>
+    <property name="location.dist.release" value="${location.dist}/release"/>
+    <property name="location.report.junit" value="${location.build}/reports/junit"/>
+    <property name="location.report.selenium" value="${location.build}/reports/selenium"/>
+    <property name="location.war.exploded" value="${location.build}/webapp/exploded"/>
+
+    <path id="all.jars">
+        <fileset dir="${location.lib}/shipped">
+            <include name="**/*.jar"/>
+            <exclude name="src/*"/>
+        </fileset>
+        <fileset dir="${location.lib}/reference">
+            <include name="**/*.jar"/>
+            <exclude name="src/*"/>
+        </fileset>
+    </path>
+
+    <target name="clean">
+        <echo message="removing build directory"/>
+        <delete dir="${location.build}"/>
+        <mkdir dir="${location.build}"/>
+        <mkdir dir="${location.logs}"/>
+    </target>
+
+    <target name="clean-logs">
+        <delete dir="${location.logs}">
+            <include name="*.log"/>
+            <include name="*.log.*"/>
+        </delete>
+    </target>
+
+    <target name="compile">
+        <mkdir dir="${location.classes}"/>
+        <mkdir dir="${location.test.classes}"/>
+
+        <compile-groovy src="${location.src}" dest="${location.classes}"/>
+        <copyResources from="${location.src}" to="${location.classes}"/>
+
+        <!--<compile src="${location.src.test.javascript}" dest="${location.test.classes}"/>-->
+        <!--<copyResources from="${location.src.test.javascript}" to="${location.test.classes}"/>-->
+
+        <compile-groovy src="${location.src.test}" dest="${location.test.classes}"/>
+        <copyResources from="${location.src.test}" to="${location.test.classes}"/>
+
+        <!--<compile src="${location.src.test.smoke}" dest="${location.test.classes}"/>-->
+        <!--<copyResources from="${location.src.test.smoke}" to="${location.test.classes}"/>-->
+
+        <!--<compile src="${location.src.test.integration}" dest="${location.test.classes}"/>-->
+        <!--<copyResources from="${location.src.test.integration}" to="${location.test.classes}"/>-->
+
+        <compile-groovy src="${location.src.test.selenium}" dest="${location.test.classes}"/>
+        <copyResources from="${location.src.test.selenium}" to="${location.test.classes}"/>
+
+        <!--<antcall target="compile-assets" inheritall="true" inheritrefs="true"/>-->
+    </target>
+
+
+    <target name="clean-and-compile" depends="clean,compile"/>
+
+    <target name="check-for-failure">
+        <fail if="test.fail" message="Test Failure"/>
+    </target>
+
+    <target name="development-version" unless="release">
+        <property file="version.properties"/>
+        <tstamp>
+            <format property="timestamp" pattern="yyyyMMddHHmm" locale="en" timezone="GMT"/>
+        </tstamp>
+        <property name="version" value="${application.version}-${timestamp}"/>
+    </target>
+
+    <target name="release-version" if="release">
+        <property file="version.properties"/>
+        <property name="version" value="${application.version}"/>
+    </target>
+
+    <target name="determine-version" depends="development-version, release-version">
+        <echo message="Version for build is : ${version}"/>
+    </target>
+
+    <target name="release">
+        <property name="release" value="true"/>
+        <antcall target="dist"/>
+    </target>
+
+    <target name="quick-tests" depends="compile">
+        <mkdir dir="${location.report.junit}"/>
+        <junit printsummary="true" showoutput="true" fork="true" forkmode="once" failureproperty="test.fail"
+               errorproperty="test.fail">
+            <jvmarg value="-server"/>
+            <jvmarg value="-Xmx512m"/>
+            <jvmarg value="-XX:MaxPermSize=256m"/>
+            <sysproperty key="user.timezone" value="UTC"/>
+            <sysproperty key="file.encoding" value="UTF-8"/>
+            <!--<sysproperty key="java.util.logging.config.file" value="src/java/logging.properties"/>-->
+            <!--<sysproperty key="configName" value="${configName}"/>-->
+            <formatter type="xml"/>
+            <classpath location="${location.conf}"/>
+            <classpath location="${location.classes}"/>
+            <classpath location="${location.test.classes}"/>
+            <classpath location="src/web/WEB-INF"/>
+            <classpath refid="all.jars"/>
+            <test todir="${location.report.junit}" name="org.monkey.AllQuickTestsSuite"/>
+        </junit>
+        <antcall target="check-for-failure" inheritall="true"/>
+    </target>
+
+    <taskdef name="groovc" classname="org.codehaus.groovy.ant.Groovyc" classpathref="all.jars"/>
+
+    <macrodef name="compile-groovy">
+        <attribute name="src"/>
+        <attribute name="dest"/>
+        <sequential>
+            <groovc destdir="@{dest}" classpathref="all.jars" encoding="UTF-8" srcdir="@{src}" fork="yes" memoryinitialsize="384m" memorymaximumsize="512m">
+                <javac source="1.6" classpathref="all.jars" encoding="UTF-8" debug="on">
+                    <classpath location="${location.classes}"/>
+                </javac>
+            </groovc>
+        </sequential>
+    </macrodef>
+
+    <macrodef name="compile-java">
+        <attribute name="src"/>
+        <attribute name="dest"/>
+        <sequential>
+            <javac source="1.6" srcdir="@{src}" destdir="@{dest}" classpathref="all.jars" encoding="UTF-8" debug="on" fork="yes" memoryinitialsize="128m" memorymaximumsize="128m">
+                <classpath location="${location.classes}"/>
+            </javac>
+        </sequential>
+    </macrodef>
+
+    <macrodef name="copyResources">
+        <attribute name="from"/>
+        <attribute name="to"/>
+        <sequential>
+            <copy todir="@{to}" encoding="UTF-8">
+                <fileset dir="@{from}">
+                    <include name="**/*"/>
+                    <exclude name="**/*.java"/>
+                    <exclude name="**/*.groovy"/>
+                </fileset>
+            </copy>
+        </sequential>
+
+    </macrodef>
+
+    <target name="teamcity-quick-tests" depends="clean,quick-tests,check-for-failure"/>
+
+    <target name="exploded-war" depends="compile, determine-version">
+        <echo message="Copying required files to the exploded war folder"/>
+        <copy todir="${location.war.exploded}">
+            <fileset dir="src/web" includes="**/*"/>
+        </copy>
+        <copy todir="${location.war.exploded}/WEB-INF/classes">
+            <fileset dir="${location.classes}" includes="**/*"/>
+        </copy>
+        <copy todir="${location.war.exploded}/WEB-INF/lib">
+            <fileset dir="${location.lib}/shipped" includes="**/*" excludes="src/*"/>
+        </copy>
+        <!--<replace file="${location.war.exploded}/WEB-INF/spring/monkeyServiceContext.xml" token="%DEV-VERSION%"-->
+                 <!--value="${version}"/>-->
+    </target>
+
+    <target name="dist" depends="compile, exploded-war, determine-version">
+        <echo message="##teamcity[progressMessage 'Creating release structure']"/>
+        <mkdir dir="${location.dist.release}"/>
+        <mkdir dir="${location.dist.release}/${version}"/>
+        <mkdir dir="${location.dist.release}/${version}/web"/>
+        <mkdir dir="${location.dist.release}/${version}/conf"/>
+        <mkdir dir="${location.dist.release}/${version}/bin"/>
+
+        <echo message="##teamcity[progressMessage 'Copying web resources']"/>
+        <copy todir="${location.dist.release}/${version}/web" overwrite="true">
+            <fileset dir="${location.war.exploded}" includes="**/*"/>
+        </copy>
+
+        <echo message="##teamcity[progressMessage 'Copying configuration resources']"/>
+        <copy todir="${location.dist.release}/${version}/conf" overwrite="true">
+            <fileset dir="${location.conf}" includes="**/*"/>
+        </copy>
+
+        <echo message="##teamcity[progressMessage 'Copying scripts resources']"/>
+        <copy todir="${location.dist.release}/${version}/bin" overwrite="true">
+            <fileset dir="${location.bin}" includes="**/*"/>
+        </copy>
+
+        <echo message="##teamcity[progressMessage 'Apploying versino settings']"/>
+        <replace dir="${location.dist.release}/${version}">
+            <replacefilter token="@APPLICATION_VERSION@" value="${version}"/>
+            <patternset>
+                <include name="conf/*"/>
+                <include name="bin/*"/>
+                <exclude name="**/wrapper"/>
+                <exclude name="**/wrapper-*"/>
+                <exclude name="**/*.exe"/>
+                <exclude name="conf/pki/**"/>
+            </patternset>
+        </replace>
+
+        <fixcrlf srcdir="${location.dist.release}/${version}/bin" eol="lf" eof="remove" includes="**/*.sh"/>
+
+        <!--<tar longfile="gnu" destfile="${location.dist.release}/monkey-${version}.tar.gz" compression="gzip">-->
+            <!--<tarfileset dir="${location.dist}/expanded-deployment" mode="644">-->
+                <!--<include name="${version}/**/*"/>-->
+                <!--<exclude name="**/*.sh"/>-->
+            <!--</tarfileset>-->
+            <!--<tarfileset dir="${location.dist}/expanded-deployment" mode="755">-->
+                <!--<include name="${version}/**/*.sh"/>-->
+                <!--<include name="${version}/**/wrapper"/>-->
+            <!--</tarfileset>-->
+        <!--</tar>-->
+
+    </target>
+
+    <target name="dev-build" description="Development Build" depends="determine-version">
+        <antcall target="dist"/>
+
+        <echo message="##teamcity[progressMessage 'Packing files']"/>
+
+        <zip destfile="${location.dist.release}/monkey-${version}.zip"
+             basedir="${location.dist.release}/${version}" compress="true"
+             comment="Application version ${version}" level="9"/>
+
+        <echo message="##teamcity[progressMessage 'Publishing artifacts']"/>
+        <echo message="##teamcity[publishArtifacts 'build/dist/release/monkey']"/>
+
+        <echo message="##teamcity[buildStatus status='{build.status.text}' text='Application version ${version}']"/>
+
+    </target>
+
+
+
+</project>
