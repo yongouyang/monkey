@@ -1,4 +1,4 @@
-<project name="monkey" default="quick-tests" basedir=".">
+<project name="monkey" default="unit-tests" basedir=".">
 
     <description>Monkey</description>
 
@@ -100,7 +100,7 @@
         <antcall target="dist"/>
     </target>
 
-    <target name="quick-tests" depends="compile">
+    <target name="unit-tests" depends="compile">
         <mkdir dir="${location.report.junit}"/>
         <junit printsummary="true" showoutput="true" fork="true" forkmode="once" failureproperty="test.fail"
                errorproperty="test.fail">
@@ -161,7 +161,7 @@
 
     </macrodef>
 
-    <target name="teamcity-quick-tests" depends="clean,quick-tests,check-for-failure"/>
+    <target name="teamcity-unit-tests" depends="clean,unit-tests,check-for-failure"/>
 
     <target name="exploded-war" depends="compile, determine-version">
         <echo message="Copying required files to the exploded war folder"/>
