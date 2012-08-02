@@ -100,6 +100,9 @@
         <antcall target="dist"/>
     </target>
 
+    <target name="teamcity-unit-tests" depends="clean,unit-tests,check-for-failure"/>
+    <target name="teamcity-ui-tests" depends="clean,ui-tests,check-for-failure"/>
+
     <target name="unit-tests" depends="compile">
         <mkdir dir="${location.report.junit}"/>
         <junit printsummary="true" showoutput="true" fork="true" forkmode="once" failureproperty="test.fail"
@@ -117,7 +120,29 @@
             <classpath location="${location.test.classes}"/>
             <classpath location="src/web/WEB-INF"/>
             <classpath refid="all.jars"/>
-            <test todir="${location.report.junit}" name="org.monkey.AllQuickTestsSuite"/>
+            <test todir="${location.report.junit}" name="org.monkey.UnitTestSuite"/>
+        </junit>
+        <antcall target="check-for-failure" inheritall="true"/>
+    </target>
+
+    <target name="ui-tests" depends="compile">
+        <mkdir dir="${location.report.junit}"/>
+        <junit printsummary="true" showoutput="true" fork="true" forkmode="once" failureproperty="test.fail"
+               errorproperty="test.fail">
+            <jvmarg value="-server"/>
+            <jvmarg value="-Xmx512m"/>
+            <jvmarg value="-XX:MaxPermSize=256m"/>
+            <sysproperty key="user.timezone" value="UTC"/>
+            <sysproperty key="file.encoding" value="UTF-8"/>
+            <!--<sysproperty key="java.util.logging.config.file" value="src/java/logging.properties"/>-->
+            <!--<sysproperty key="configName" value="${configName}"/>-->
+            <formatter type="xml"/>
+            <classpath location="${location.conf}"/>
+            <classpath location="${location.classes}"/>
+            <classpath location="${location.test.classes}"/>
+            <classpath location="src/web/WEB-INF"/>
+            <classpath refid="all.jars"/>
+            <test todir="${location.report.junit}" name="org.monkey.SeleniumTestSuite"/>
         </junit>
         <antcall target="check-for-failure" inheritall="true"/>
     </target>
@@ -160,8 +185,6 @@
         </sequential>
 
     </macrodef>
-
-    <target name="teamcity-unit-tests" depends="clean,unit-tests,check-for-failure"/>
 
     <target name="exploded-war" depends="compile, determine-version">
         <echo message="Copying required files to the exploded war folder"/>

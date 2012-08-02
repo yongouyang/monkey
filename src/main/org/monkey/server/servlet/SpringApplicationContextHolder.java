@@ -14,7 +14,7 @@ public class SpringApplicationContextHolder implements ServletContextListener {
     }
 
     public void contextDestroyed(ServletContextEvent servletContextEvent) {
-        throw new UnsupportedOperationException("Not implemented yet!");
+//        throw new UnsupportedOperationException("Not implemented yet!");
     }
 
     public static WebApplicationContext getApplicationContext() {
