@@ -3,6 +3,7 @@ package org.monkey.steps
 import org.junit.After
 import org.monkey.selenium.FirefoxDriverWrapper
 import org.openqa.selenium.firefox.FirefoxDriver
+import org.monkey.common.utils.SleepUtils
 
 this.metaClass.mixin(cucumber.runtime.groovy.Hooks)
 this.metaClass.mixin(cucumber.runtime.groovy.EN)
@@ -26,10 +27,7 @@ Given(~'^I click the link with id (.*)') { String id ->
 }
 
 Then(~'^I should be on the (.*) page$') { String uri ->
-    Thread.sleep(1000)
+    SleepUtils.waitFor(5000, 200) { driver.currentUrl == "http://localhost:8899/${uri}" }
     assert driver.currentUrl == "http://localhost:8899/${uri}"
 }
 
-//After() {
-//    driver.close()
-//}

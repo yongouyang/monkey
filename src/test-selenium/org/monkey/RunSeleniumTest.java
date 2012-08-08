@@ -8,7 +8,7 @@ import org.monkey.selenium.FirefoxDriverWrapper;
 import org.monkey.system.TestingSystem;
 
 @RunWith(Cucumber.class)
-@Cucumber.Options(tags = {"@ui"})
+@Cucumber.Options(tags = {"@ui"}, format = {"pretty", "html:build/cucumber"})
 public class RunSeleniumTest {
 
     @BeforeClass
