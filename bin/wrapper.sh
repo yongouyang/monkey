@@ -18,28 +18,26 @@
 # These settings can be modified to fit the needs of your application
 # Optimized for use with version 3.5.15 of the Wrapper.
 
-#********************************************************************
-# NOTE - This script has been modified to run the TestWrapper sample
-#        application and should NOT be used as a base for your own
-#        applications.  All of the documentation assumes that you are
-#        working from the default source script:
-#        WRAPPER_HOME/src/bin/sh.script.in
-#********************************************************************
+APPNAME="$1"
+[[ -z "$APPNAME" ]] && echo "usage: wrapper <APPNAME> <CONFIGNAME> [ console | start | stop | restart | condrestart | status | install | remove | dump ]" && exit 1
+shift
+
+EXTRA_COMMAND="set.APPNAME=$APPNAME"
 
 # Application
-APP_NAME="testwrapper"
-APP_LONG_NAME="Test Wrapper Sample Application"
+export APP_NAME="$APPNAME"
+export APP_LONG_NAME="$APPNAME"
 
 # Wrapper
-WRAPPER_CMD="./wrapper"
-WRAPPER_CONF="../conf/wrapper.conf"
+export WRAPPER_CMD="./wrapper"
+export WRAPPER_CONF="../conf/wrapper_$APPNAME.conf"
 
 # Priority at which to run the wrapper.  See "man nice" for valid priorities.
 #  nice is only used if a priority is specified.
 PRIORITY=
 
 # Location of the pid file.
-PIDDIR="."
+PIDDIR="/app/monkey/logs"
 
 # FIXED_COMMAND tells the script to use a hard coded action rather than
 # expecting the first parameter of the command line to be the command.
@@ -102,19 +100,19 @@ PLIST_DOMAIN=org.tanukisoftware.wrapper
 # The following two lines are used by the chkconfig command. Change as is
 #  appropriate for your application.  They should remain commented.
 # chkconfig: 2345 20 80
-# description: Test Wrapper Sample Application
+# description: monkey @MONKEY_VERSION@
  
 # Initialization block for the install_initd and remove_initd scripts used by
 #  SUSE linux distributions.
 ### BEGIN INIT INFO
-# Provides: testwrapper
+# Provides: monkey
 # Required-Start: $local_fs $network $syslog
 # Should-Start: 
 # Required-Stop:
 # Default-Start: 2 3 4 5
 # Default-Stop: 0 1 6
-# Short-Description: Test Wrapper Sample Application
-# Description: Test Wrapper Sample Application Description
+# Short-Description: monkey
+# Description: monkey
 ### END INIT INFO
 
 # Do not modify anything beyond this point
@@ -209,7 +207,7 @@ ANCHORFILE="$PIDDIR/$APP_NAME.anchor"
 COMMANDFILE="$PIDDIR/$APP_NAME.command"
 STATUSFILE="$PIDDIR/$APP_NAME.status"
 JAVASTATUSFILE="$PIDDIR/$APP_NAME.java.status"
-PIDFILE="$PIDDIR/$APP_NAME.pid"
+PIDFILE="$PIDDIR/${APP_NAME}_${MONKEY_ENV}.pid"
 LOCKDIR="/var/lock/subsys"
 LOCKFILE="$LOCKDIR/$APP_NAME"
 pid=""

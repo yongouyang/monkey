@@ -26,9 +26,10 @@ Given(~'^I click the link with id (.*)') { String id ->
 }
 
 Then(~'^I should be on the (.*) page$') { String uri ->
-    assert driver.currentUrl != "http://localhost:8899/${uri}"
+    Thread.sleep(1000)
+    assert driver.currentUrl == "http://localhost:8899/${uri}"
 }
 
-After() {
-    driver.close()
-}
+//After() {
+//    driver.close()
+//}
