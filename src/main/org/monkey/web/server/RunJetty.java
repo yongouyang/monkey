@@ -1,6 +1,8 @@
 package org.monkey.web.server;
 
 import org.monkey.common.utils.WrapperUtils;
+import org.monkey.common.utils.config.ApplicationStartupUtils;
+import org.monkey.common.utils.config.SystemPreferencesImpl;
 import org.monkey.server.JettyServer;
 import org.tanukisoftware.wrapper.WrapperListener;
 import org.tanukisoftware.wrapper.WrapperManager;
@@ -28,9 +30,10 @@ public class RunJetty implements WrapperListener {
     private void doStart() throws Exception {
         WrapperManager.log(WrapperManager.WRAPPER_LOG_LEVEL_STATUS, "------------- Monkey Start Initiated -------------");
         WrapperUtils.registerServiceWrapperMBean();
+        ApplicationStartupUtils.initStartupOptions(System.getProperty(SystemPreferencesImpl.MONKEY_ENV));
 
         // todo - need to figure out a better way to specify the port number
-        server = new JettyServer(8899, "Core Service", "Provides core application features");
+        server = new JettyServer(ApplicationStartupUtils.getMonkeyHttpPort(), "Core Service", "Provides core application features");
         server.start();
 
         WrapperManager.log(WrapperManager.WRAPPER_LOG_LEVEL_STATUS, "------------- Monkey Started Successfully -------------");
