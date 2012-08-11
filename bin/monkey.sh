@@ -47,7 +47,7 @@ else
     export ENABLE_JMX_AUTH=false;
 fi
 
-MONKEY_BIN_DIR='dirname $0'
+MONKEY_BIN_DIR=`dirname $0`
 
 ${MONKEY_BIN_DIR}/wrapper.sh monkey_core $COMMAND >>$LOGFILE 2>&1
 
