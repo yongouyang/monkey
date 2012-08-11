@@ -1,4 +1,4 @@
-#!/bin.sh
+#!/bin/sh
 
 # Extra environment validation/defaults to run application:
 
