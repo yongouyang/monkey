@@ -15,30 +15,30 @@ echo "MONKEY_ENV=${MONKEY_ENV}"
 echo "HOSTNAME=${HOSTNAME}"
 
 TODAY=`date '+%Y%m%d'`
-LOGFILE=/app/monkey/logs/monkey_components_start_$TODAY_$MONKEY_ENV.log
+LOGFILE=/app/monkey/logs/monkey_components_stop_$TODAY_$MONKEY_ENV.log
 echo "Logging to $LOGFILE"
 
 export MONKEY_ENV
 
 MONKEY_BIN_DIR=`dirname $0`
 
-start_monkey_core () {
-    echo "Starting monkey $MONKEY_ENV"
+stop_monkey_core () {
+    echo "Stopping monkey $MONKEY_ENV"
     JMX_PORT=$1
-    ${MONKEY_BIN_DIR}/monkey.sh start $JMX_PORT >>$LOGFILE 2>&1
+    ${MONKEY_BIN_DIR}/monkey.sh stop $JMX_PORT >>$LOGFILE 2>&1
 }
 
 if [ "${MONKEY_ENV}" == "PRODAPAC" ] && [ "${HOSTNAME}" == "production_host_name" ]
 then
-    #${MONKEY_BIN_DIR}/monkey_sub_components.sh start componentName jmxPort
-    start_monkey_core 8686
+    #${MONKEY_BIN_DIR}/monkey_sub_components.sh stop componentName jmxPort
+    stop_monkey_core 8686
 elif [ "${MONKEY_ENV}" == "UATAPAC" ] && [ "${HOSTNAME}" == "uat_host_name" ]
 then
-    #${MONKEY_BIN_DIR}/monkey_sub_components.sh start componentName jmxPort
-    start_monkey_core 8686
+    #${MONKEY_BIN_DIR}/monkey_sub_components.sh stop componentName jmxPort
+    stop_monkey_core 8686
 elif [ "${MONKEY_ENV}" == "DEVAPAC" ] && [ "${HOSTNAME}" == "monkey-dev-01" ]
 then
-    start_monkey_core 8686
+    stop_monkey_core 8686
 else
     echo "Unknown HOSTNAME/MONKEY_ENV combination!"
     exit 1
