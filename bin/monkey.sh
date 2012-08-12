@@ -33,8 +33,12 @@ export JAVA_HOME=${JAVA_HOME:-"/app/jre1.6.0_04"}
 if [ -d /app/monkey/java ]
 then
     export JAVA_HOME=/app/monkey/java
+    export JAVA_BINDIR=/app/monkey/java/bin
+    export JAVA_ROOT=/app/monkey/java
 fi
 echo "JAVA_HOME=${JAVA_HOME}" >>$LOGFILE
+echo "JAVA_BINDIR=${JAVA_BINDIR}" >> $LOGFILE
+echo "JAVA_ROOT=${JAVA_ROOT}" >> $LOGFILE
 
 export PATH=${JAVA_HOME}/bin:${PATH}
 

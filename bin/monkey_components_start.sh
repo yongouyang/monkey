@@ -15,7 +15,7 @@ echo "MONKEY_ENV=${MONKEY_ENV}"
 echo "HOSTNAME=${HOSTNAME}"
 
 TODAY=`date '+%Y%m%d'`
-LOGFILE=/app/monkey/logs/monkey_components_start_$TODAY_$MONKEY_ENV.log
+LOGFILE=/app/monkey/logs/monkey_components_start.$MONKEY_ENV.$TODAY.log
 echo "Logging to $LOGFILE"
 
 export MONKEY_ENV
