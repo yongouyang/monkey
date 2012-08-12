@@ -1,5 +1,6 @@
 package org.monkey.server;
 
+import org.monkey.common.utils.config.ApplicationStartupUtils;
 import org.monkey.server.handler.SimpleServletRequestHandler;
 import org.monkey.server.servlet.JsonServletAdapter;
 import org.mortbay.jetty.Server;
@@ -39,7 +40,8 @@ public class JettyServer implements InertialComponent {
         server.setHandler(contextHandlerCollection);
 
 //        rootContext = new Context(contextHandlerCollection, "/", Context.SESSIONS);
-        rootContext = new DefaultWebAppContext(contextHandlerCollection, "src/web", "/");
+//        rootContext = new DefaultWebAppContext(contextHandlerCollection, "src/web", "/");
+        rootContext = new DefaultWebAppContext(contextHandlerCollection, ApplicationStartupUtils.getWarPath(), "/");
 
 
 //        mount("/Ping", new PingHandler());

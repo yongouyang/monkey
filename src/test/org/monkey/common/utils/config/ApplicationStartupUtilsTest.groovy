@@ -7,12 +7,13 @@ import static org.monkey.common.utils.config.ApplicationStartupUtils.MONKEY_HTTP
 class ApplicationStartupUtilsTest {
 
     @Test
-    public void initStartupOptions() {
+    public void initStartupOptionsSetupDefaultProperties() {
         assert System.getProperty(MONKEY_HTTP_PORT) == null
 
-        ApplicationStartupUtils.initStartupOptions("TESTING")
+        ApplicationStartupUtils.initStartupOptions("env that doesn't exist")
 
-        assert System.getProperty(MONKEY_HTTP_PORT) == "8899"
+        assert ApplicationStartupUtils.monkeyHttpPort == 8899
+        assert ApplicationStartupUtils.warPath == "web"
     }
 
 }
