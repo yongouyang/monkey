@@ -225,9 +225,9 @@
             <fileset dir="${location.bin}" includes="**/*"/>
         </copy>
 
-        <echo message="##teamcity[progressMessage 'Apploying versino settings']"/>
+        <echo message="##teamcity[progressMessage 'Applying version settings']"/>
         <replace dir="${location.dist.release}/${version}">
-            <replacefilter token="@APPLICATION_VERSION@" value="${version}"/>
+            <replacefilter token="@MONKEY_VERSION@" value="${version}"/>
             <patternset>
                 <include name="conf/*"/>
                 <include name="bin/*"/>
