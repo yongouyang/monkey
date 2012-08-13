@@ -40,7 +40,6 @@ public class JettyServer implements InertialComponent {
         server.setHandler(contextHandlerCollection);
 
 //        rootContext = new Context(contextHandlerCollection, "/", Context.SESSIONS);
-//        rootContext = new DefaultWebAppContext(contextHandlerCollection, "src/web", "/");
         rootContext = new DefaultWebAppContext(contextHandlerCollection, ApplicationStartupUtils.getWarPath(), "/");
 
 
