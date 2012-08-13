@@ -1,5 +1,6 @@
 package org.monkey.web.controller;
 
+import org.monkey.common.utils.config.ApplicationStartupUtils;
 import org.restlet.data.MediaType;
 import org.restlet.representation.FileRepresentation;
 import org.restlet.representation.Representation;
@@ -27,7 +28,7 @@ public class StatusController extends ServerResource {
 //            return getTemplateRepresentation("user.html", dataModel, MediaType.TEXT_HTML);
 
 //        return "<html><body>Status Page</body></html>";
-        return new FileRepresentation("src/web/status.html", MediaType.TEXT_HTML);
+        return new FileRepresentation(ApplicationStartupUtils.getWarPath() + "/status.html", MediaType.TEXT_HTML);
     }
 
 //    protected Representation getTemplateRepresentation(String templateName,
