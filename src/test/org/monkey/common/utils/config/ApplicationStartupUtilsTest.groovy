@@ -13,7 +13,7 @@ class ApplicationStartupUtilsTest {
         ApplicationStartupUtils.initStartupOptions("env that doesn't exist")
 
         assert ApplicationStartupUtils.monkeyHttpPort == 8899
-        assert ApplicationStartupUtils.warPath == "web"
+        assert ApplicationStartupUtils.warPath == "pkgs/@MONKEY_VERSION@/web"
     }
 
 }

@@ -10,6 +10,7 @@
     <property name="location.src.test" value="${basedir}/src/test"/>
     <property name="location.src.test.integration" value="${basedir}/src/test-integration"/>
     <property name="location.src.test.selenium" value="${basedir}/src/test-selenium"/>
+    <property name="location.src.test.smoke" value="${basedir}/src/test-smoke"/>
 
     <property name="location.build" value="${basedir}/build"/>
     <property name="location.logs" value="${basedir}/logs"/>
@@ -60,8 +61,8 @@
         <compile-groovy src="${location.src.test}" dest="${location.test.classes}"/>
         <copyResources from="${location.src.test}" to="${location.test.classes}"/>
 
-        <!--<compile src="${location.src.test.smoke}" dest="${location.test.classes}"/>-->
-        <!--<copyResources from="${location.src.test.smoke}" to="${location.test.classes}"/>-->
+        <compile-groovy src="${location.src.test.smoke}" dest="${location.test.classes}"/>
+        <copyResources from="${location.src.test.smoke}" to="${location.test.classes}"/>
 
         <!--<compile src="${location.src.test.integration}" dest="${location.test.classes}"/>-->
         <!--<copyResources from="${location.src.test.integration}" to="${location.test.classes}"/>-->
@@ -103,6 +104,7 @@
 
     <target name="teamcity-unit-tests" depends="clean,unit-tests,check-for-failure"/>
     <target name="teamcity-ui-tests" depends="clean,ui-tests,check-for-failure"/>
+    <target name="teamcity-smoke-tests" depends="clean,smoke-tests,check-for-failure"/>
 
     <target name="unit-tests" depends="compile">
         <mkdir dir="${location.report.junit}"/>
@@ -144,6 +146,28 @@
             <classpath location="src/web/WEB-INF"/>
             <classpath refid="all.jars"/>
             <test todir="${location.report.junit}" name="org.monkey.SeleniumTestSuite"/>
+        </junit>
+        <antcall target="check-for-failure" inheritall="true"/>
+    </target>
+
+    <target name="smoke-tests" depends="compile">
+        <mkdir dir="${location.report.junit}"/>
+        <junit printsummary="true" showoutput="true" fork="true" forkmode="once" failureproperty="test.fail"
+               errorproperty="test.fail">
+            <jvmarg value="-server"/>
+            <jvmarg value="-Xmx512m"/>
+            <jvmarg value="-XX:MaxPermSize=256m"/>
+            <sysproperty key="user.timezone" value="UTC"/>
+            <sysproperty key="file.encoding" value="UTF-8"/>
+            <!--<sysproperty key="java.util.logging.config.file" value="src/java/logging.properties"/>-->
+            <!--<sysproperty key="configName" value="${configName}"/>-->
+            <formatter type="xml"/>
+            <classpath location="${location.conf}"/>
+            <classpath location="${location.classes}"/>
+            <classpath location="${location.test.classes}"/>
+            <classpath location="src/web/WEB-INF"/>
+            <classpath refid="all.jars"/>
+            <test todir="${location.report.junit}" name="org.monkey.SmokeTestSuite"/>
         </junit>
         <antcall target="check-for-failure" inheritall="true"/>
     </target>

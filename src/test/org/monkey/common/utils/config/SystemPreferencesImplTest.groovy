@@ -17,7 +17,7 @@ class SystemPreferencesImplTest {
     public void initSuccessfullyAndCanGetProperties() {
         preferences.init()
 
-        assert preferences.get("MONKEY.REGION") == "APAC"
+        assert preferences.get("MONKEY.REGION") == "TESTING"
         assert preferences.get("MONKEY.DEFAULT_USED_FOR_TEST") == "Monkey King" // default property used for testing only
     }
 
