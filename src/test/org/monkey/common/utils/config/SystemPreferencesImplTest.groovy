@@ -9,7 +9,7 @@ class SystemPreferencesImplTest {
 
     @Before
     public void before() {
-        System.setProperty("MONKEY_ENV", "TESTING")
+        PropertyUtils.setSystemProperty("MONKEY_ENV", "TESTING")
         preferences = new SystemPreferencesImpl()
     }
 
@@ -19,11 +19,6 @@ class SystemPreferencesImplTest {
 
         assert preferences.get("MONKEY.REGION") == "TESTING"
         assert preferences.get("MONKEY.DEFAULT_USED_FOR_TEST") == "Monkey King" // default property used for testing only
-    }
-
-    @Test
-    public void toStringCanCensorPassword() {
-        assert preferences.toString("somePasswordKey", "some password") == "somePasswordKey = ****"
     }
 
     @Test

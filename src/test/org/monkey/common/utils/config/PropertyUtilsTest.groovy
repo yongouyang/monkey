@@ -20,4 +20,9 @@ class PropertyUtilsTest {
 
         assert properties.getProperty("DEFAULT.${MONKEY_HTTP_PORT}") == "8899"
     }
+
+    @Test
+    public void toStringCanCensorPassword() {
+        assert PropertyUtils.toString("somePasswordKey", "some password") == "somePasswordKey = ****"
+    }
 }

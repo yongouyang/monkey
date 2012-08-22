@@ -13,7 +13,7 @@ public class ApplicationStartupUtils {
     public static final String MONKEY_HTTP_PORT = "MONKEY.HTTP.PORT";
 
     public static void initStartupOptions(String environmentName) {
-        System.setProperty(MONKEY_ENV, environmentName);
+        PropertyUtils.setSystemProperty(MONKEY_ENV, environmentName);
 
         ResourceBundle resourceBundle = ResourceBundle.getBundle("ApplicationStartupConfig");
         Properties properties = PropertyUtils.toProperties(resourceBundle);
@@ -32,11 +32,11 @@ public class ApplicationStartupUtils {
 
 
         for (String key : defaults.stringPropertyNames()) {
-            System.setProperty(key, defaults.getProperty(key));
+            PropertyUtils.setSystemProperty(key, defaults.getProperty(key));
         }
 
         for (String key : envOverrides.stringPropertyNames()) {
-            System.setProperty(key, envOverrides.getProperty(key));
+            PropertyUtils.setSystemProperty(key, envOverrides.getProperty(key));
         }
     }
 

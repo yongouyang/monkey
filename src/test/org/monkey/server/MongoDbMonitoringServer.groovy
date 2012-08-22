@@ -1,6 +1,8 @@
 package org.monkey.server
 
 import org.monkey.common.utils.config.SystemPreferencesImpl
+import org.hamcrest.beans.PropertyUtil
+import org.monkey.common.utils.config.PropertyUtils
 
 
 class MongoDbMonitoringServer implements InertialComponent {
@@ -34,7 +36,7 @@ class MongoDbMonitoringServer implements InertialComponent {
 
     public static void main(String[] args) {
         def server = new MongoDbMonitoringServer("TESTING")
-        System.setProperty(SystemPreferencesImpl.MONKEY_ENV, "TESTING")
+        PropertyUtils.setSystemProperty(SystemPreferencesImpl.MONKEY_ENV, "TESTING")
 
         Runtime.getRuntime().addShutdownHook(new Thread() {
             @Override

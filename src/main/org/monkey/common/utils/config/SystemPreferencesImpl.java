@@ -17,7 +17,6 @@ import static org.monkey.common.utils.config.PropertyUtils.toProperties;
 public class SystemPreferencesImpl implements SystemPreferences {
 
     public static final String MONKEY_ENV = "MONKEY_ENV";
-    public static final Pattern PASSWORD_PROPERTY_PATTERN = Pattern.compile(".*password.*", Pattern.CASE_INSENSITIVE);
 
     @PostConstruct
     public void init() {
@@ -39,8 +38,7 @@ public class SystemPreferencesImpl implements SystemPreferences {
             String existingPropertyValue = System.getProperty(propertyKey);
             if (StringUtils.isBlank(existingPropertyValue)) {
                 String propertyValue = properties.getProperty(propertyKey);
-                System.out.println("Setting property for environment: " + toString(propertyKey, propertyValue));
-                System.setProperty(propertyKey, propertyValue);
+                PropertyUtils.setSystemProperty(propertyKey, propertyValue);
             }
         }
     }
@@ -50,12 +48,4 @@ public class SystemPreferencesImpl implements SystemPreferences {
         return System.getProperty(key);
     }
 
-    protected String toString(String propertyName, String propertyValue) {
-        if (propertyValue != null) {
-            if (PASSWORD_PROPERTY_PATTERN.matcher(propertyName).matches()) {
-                propertyValue = "****";
-            }
-        }
-        return propertyName + " = " + propertyValue;
-    }
 }
