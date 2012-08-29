@@ -47,4 +47,8 @@ public class ApplicationStartupUtils {
     public static String getWarPath() {
         return System.getProperty("MONKEY.WAR.PATH");
     }
+
+    public static String getLogDir() {
+        return System.getProperty("MONKEY.LOG.DIR", "logs");
+    }
 }
