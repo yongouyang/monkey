@@ -28,11 +28,11 @@ class AllowGZipResponseRequestInterceptorTest {
 
     @Test
     public void processAppendHeaderValueToTheRequestIfHeaderExists() {
-        request.addHeader("accePt-EncOding", "deflate")
+        request.setHeader("accePt-EncOding", "deflate")
 
         interceptor.process(request, null)
 
-        assert request.getHeaders("Accept-Encoding").length == 2
-        assert request.getHeaders("Accept-Encoding")[1].value == "gzip"
+        assert request.getHeaders("Accept-Encoding").length == 1
+        assert request.getHeaders("Accept-Encoding")[0].value == "gzip"
     }
 }

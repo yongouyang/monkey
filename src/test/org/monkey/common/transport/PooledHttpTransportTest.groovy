@@ -9,14 +9,13 @@ import org.mockito.Mock
 import org.mockito.runners.MockitoJUnitRunner
 
 import static org.mockito.Mockito.when
-import static org.mockito.Mockito.mock
 
 @RunWith(MockitoJUnitRunner.class)
 class PooledHttpTransportTest {
 
     PooledHttpTransport transport
 
-    @Mock StatusLine statusLine
+    @Mock StatusLine sc_processing, sc_ok, sc_temporary_redirect, sc_bad_request
 
     @Before
     public void before() {
@@ -26,11 +25,6 @@ class PooledHttpTransportTest {
     @Test
     public void isNotSuccessReturnsTrueWhenStatusCodeIsEitherOf2xxOr3xx() {
         assert !transport.isSuccess(null)
-
-        def sc_processing = mock(StatusLine.class)
-        def sc_ok = mock(StatusLine.class)
-        def sc_temporary_redirect = mock(StatusLine.class)
-        def sc_bad_request = mock(StatusLine.class)
 
         when(sc_processing.statusCode).thenReturn(HttpStatus.SC_PROCESSING)
         when(sc_ok.statusCode).thenReturn(HttpStatus.SC_OK)

@@ -10,6 +10,6 @@ import java.io.IOException;
 public class AllowGZipResponseRequestInterceptor implements HttpRequestInterceptor{
     @Override
     public void process(HttpRequest httpRequest, HttpContext httpContext) throws HttpException, IOException {
-        httpRequest.addHeader("Accept-Encoding", "gzip");
+        httpRequest.setHeader("Accept-Encoding", "gzip");
     }
 }
