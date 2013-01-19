@@ -48,4 +48,12 @@ public class SystemPreferencesImpl implements SystemPreferences {
         return System.getProperty(key);
     }
 
+    @Override
+    public Integer getInteger(String key, Integer defaultValue) {
+        String value = get(key);
+        if (StringUtils.isBlank(value)) {
+            return defaultValue;
+        }
+        return Integer.parseInt(value);
+    }
 }
