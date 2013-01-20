@@ -5,11 +5,13 @@ import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonProperty
 import org.apache.commons.lang.builder.EqualsBuilder
 import org.apache.commons.lang.builder.HashCodeBuilder
+import org.hamcrest.Matchers
 import org.joda.time.DateTime
 import org.joda.time.DateTimeZone
 import org.joda.time.LocalDate
 import org.junit.Before
 import org.junit.Test
+import org.monkey.common.utils.AssertUtils
 
 
 class JacksonJsonMarshallerTest {
@@ -136,11 +138,17 @@ class JacksonJsonMarshallerTest {
         def json = """{"strings":["string1","string2",null],"longs":[1,2,null],"doubles":[0.1,null,-0.32],"bigDecimals":[1,3,null],"booleans":[true,false,null],"nesteds":[{"value":"nested1"},null],"localDates":[null,"2013-01-19"],"nullList":null}"""
         assert marshaller.marshall(pojo) == json
 
-//        todo: need an assert util that asserts the properties of the pojo
-//        assert marshaller.unmarshall(json, MyPojoWithLists) == pojo
+        AssertUtils.assertProperties(marshaller.unmarshall(json, MyPojoWithLists), [
+            strings: Matchers.is(["string1", "string2", null]),
+            longs: Matchers.is([1L, 2L, null]),
+            doubles: Matchers.is([0.1d, null, -0.32d]),
+            bigDecimals: Matchers.is([BigDecimal.ONE, BigDecimal.valueOf(3L), null]),
+            booleans: Matchers.is([true, false, null]),
+            nesteds: Matchers.is([newNestedPojo("nested1"), null]),
+            localDates: Matchers.is([null, new LocalDate("2013-01-19")]),
+            nullList: Matchers.nullValue()
+        ])
     }
-
-
 
 /*
  * setup pojo classes for test
