@@ -29,8 +29,6 @@ public class PooledHttpTransport implements HttpTransport {
 
     public PooledHttpTransport(HttpClient httpClient) {
         this.httpClient = httpClient;
-        // by default, we will ask for gzip response, as we can handle it
-        addRequestInterceptor(new AllowGZipResponseRequestInterceptor());
     }
 
     @Override

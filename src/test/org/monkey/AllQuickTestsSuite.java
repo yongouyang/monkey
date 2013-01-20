@@ -5,8 +5,10 @@ import org.junit.runners.Suite;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
-        UnitTestSuite.class
-//        SmokeTestSuite.class
+        UnitTestSuite.class,
+        IntegrationTestSuite.class,
+        SmokeTestSuite.class
 })
 public class AllQuickTestsSuite {
+
 }

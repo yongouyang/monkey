@@ -61,11 +61,11 @@
         <compile-groovy src="${location.src.test}" dest="${location.test.classes}"/>
         <copyResources from="${location.src.test}" to="${location.test.classes}"/>
 
+        <compile-groovy src="${location.src.test.integration}" dest="${location.test.classes}"/>
+        <copyResources from="${location.src.test.integration}" to="${location.test.classes}"/>
+
         <compile-groovy src="${location.src.test.smoke}" dest="${location.test.classes}"/>
         <copyResources from="${location.src.test.smoke}" to="${location.test.classes}"/>
-
-        <!--<compile src="${location.src.test.integration}" dest="${location.test.classes}"/>-->
-        <!--<copyResources from="${location.src.test.integration}" to="${location.test.classes}"/>-->
 
         <compile-groovy src="${location.src.test.selenium}" dest="${location.test.classes}"/>
         <copyResources from="${location.src.test.selenium}" to="${location.test.classes}"/>
@@ -104,6 +104,7 @@
 
     <target name="teamcity-unit-tests" depends="clean,unit-tests,check-for-failure"/>
     <target name="teamcity-ui-tests" depends="clean,ui-tests,check-for-failure"/>
+    <target name="teamcity-integration-tests" depends="clean,integration-tests,check-for-failure"/>
     <target name="teamcity-smoke-tests" depends="clean,smoke-tests,check-for-failure"/>
 
     <target name="unit-tests" depends="compile">
@@ -150,6 +151,29 @@
         <antcall target="check-for-failure" inheritall="true"/>
     </target>
 
+    <target name="integration-tests" depends="compile">
+        <mkdir dir="${location.report.junit}"/>
+        <junit printsummary="true" showoutput="true" fork="true" forkmode="once" failureproperty="test.fail"
+               errorproperty="test.fail">
+            <jvmarg value="-server"/>
+            <jvmarg value="-Xmx512m"/>
+            <jvmarg value="-XX:MaxPermSize=256m"/>
+            <sysproperty key="user.timezone" value="UTC"/>
+            <sysproperty key="file.encoding" value="UTF-8"/>
+            <!--<sysproperty key="java.util.logging.config.file" value="src/java/logging.properties"/>-->
+            <!--<sysproperty key="configName" value="${configName}"/>-->
+            <formatter type="xml"/>
+            <classpath location="${location.conf}"/>
+            <classpath location="${location.classes}"/>
+            <classpath location="${location.test.classes}"/>
+            <classpath location="src/web/WEB-INF"/>
+            <classpath refid="all.jars"/>
+            <test todir="${location.report.junit}" name="org.monkey.IntegrationTestSuite"/>
+        </junit>
+        <antcall target="check-for-failure" inheritall="true"/>
+    </target>
+
+
     <target name="smoke-tests" depends="compile">
         <mkdir dir="${location.report.junit}"/>
         <junit printsummary="true" showoutput="true" fork="true" forkmode="once" failureproperty="test.fail"
@@ -178,7 +202,7 @@
         <attribute name="src"/>
         <attribute name="dest"/>
         <sequential>
-            <groovc destdir="@{dest}" classpathref="all.jars" encoding="UTF-8" srcdir="@{src}" fork="yes" memoryinitialsize="384m" memorymaximumsize="512m">
+            <groovc destdir="@{dest}" classpathref="all.jars" encoding="UTF-8" srcdir="@{src}" fork="yes" memoryinitialsize="384m" memorymaximumsize="1024m">
                 <javac source="1.6" classpathref="all.jars" encoding="UTF-8" debug="on">
                     <classpath location="${location.classes}"/>
                 </javac>

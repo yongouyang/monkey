@@ -8,7 +8,7 @@ class TestingSystem {
     private static boolean isRunning = false
     private static JettyServer coreApplication;
 
-    public static void init() {
+    public synchronized static void init() {
         if (!isRunning) {
             coreApplication = RunLocalServer.start()
             isRunning = true
