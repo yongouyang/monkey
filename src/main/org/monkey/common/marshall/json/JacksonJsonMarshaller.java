@@ -47,6 +47,10 @@ public class JacksonJsonMarshaller implements JsonMarshaller {
 
     }
 
+    public ObjectMapper getMapper() {
+        return mapper;
+    }
+
     public JacksonJsonMarshaller withPrettyPrint() {
         mapper.configure(SerializationFeature.INDENT_OUTPUT, true);
         return this;

@@ -18,7 +18,7 @@ class PropertyUtilsTest {
     public void toPropertiesCanConvertResourceBundleToProperties() {
         def properties = PropertyUtils.toProperties(resourceBundle)
 
-        assert properties.getProperty("DEFAULT.${MONKEY_HTTP_PORT}") == "8899"
+        assert properties.getProperty("DEFAULT.${MONKEY_HTTP_PORT}") == "8799"
     }
 
     @Test
