@@ -1,15 +1,14 @@
 package org.monkey.web.controller;
 
-import org.restlet.resource.Get;
-import org.restlet.resource.ServerResource;
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
-@Scope("prototype")
 @Controller
-public class PingController extends ServerResource {
+public class PingController {
 
-    @Get("json")
+    @RequestMapping("/ping")
+    @ResponseBody
     public String view() {
         return "{\"success\":\"success\"}";
     }

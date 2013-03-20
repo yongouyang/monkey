@@ -36,9 +36,9 @@
     <target name="clean">
         <echo message="removing build directory"/>
         <delete dir="${location.build}"/>
-        <delete dir="${location.logs}"/>
+        <!--<delete dir="${location.logs}"/>-->
         <mkdir dir="${location.build}"/>
-        <mkdir dir="${location.logs}"/>
+        <!--<mkdir dir="${location.logs}"/>-->
     </target>
 
     <target name="clean-logs">
