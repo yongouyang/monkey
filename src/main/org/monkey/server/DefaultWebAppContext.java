@@ -14,21 +14,9 @@ public class DefaultWebAppContext extends WebAppContext {
     public DefaultWebAppContext(HandlerContainer parent, String webApp, String contextPath) {
         super(parent, webApp, contextPath);
         HashMap<String, Object> initParams = new HashMap<String, Object>();
+        // leave it for now, even though we don't have an applicationContext.xml
         initParams.put(ContextLoader.CONFIG_LOCATION_PARAM, XmlWebApplicationContext.DEFAULT_CONFIG_LOCATION);
         setInitParams(initParams);
-        setParentLoaderPriority(true);
-    }
-
-    public DefaultWebAppContext() {
-        setContextPath("/");
-        setWar("src/web");
-
-        HashMap<String, Object> initParams = new HashMap<String, Object>();
-        initParams.put(ContextLoader.CONFIG_LOCATION_PARAM, XmlWebApplicationContext.DEFAULT_CONFIG_LOCATION);
-        setInitParams(initParams);
-
-        setErrorHandler(new ErrorHandler()); // should create a custom error handler
-
         setParentLoaderPriority(true);
     }
 

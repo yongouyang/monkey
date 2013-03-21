@@ -39,18 +39,7 @@ public class JettyServer implements InertialComponent {
         ContextHandlerCollection contextHandlerCollection = new ContextHandlerCollection();
         server.setHandler(contextHandlerCollection);
 
-//        rootContext = new Context(contextHandlerCollection, "/", Context.SESSIONS);
         rootContext = new DefaultWebAppContext(contextHandlerCollection, ApplicationStartupUtils.getWarPath(), "/");
-
-
-//        mount("/Ping", new PingHandler());
-
-        server.addHandler(new DefaultHandler());
-
-        // can be moved to somewhere else
-//        DefaultWebAppContext webAppContext = new DefaultWebAppContext();
-//        server.addHandler(webAppContext);
-//        SpringApplicationContextHolder.getApplicationContext();
 
     }
 
