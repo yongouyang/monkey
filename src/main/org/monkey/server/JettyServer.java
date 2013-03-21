@@ -8,6 +8,9 @@ import org.mortbay.jetty.handler.ContextHandlerCollection;
 import org.mortbay.jetty.handler.DefaultHandler;
 import org.mortbay.jetty.servlet.Context;
 import org.mortbay.jetty.servlet.ServletHolder;
+import org.seleniumhq.jetty7.servlet.api.ServletRegistration;
+import org.springframework.web.context.support.XmlWebApplicationContext;
+import org.springframework.web.servlet.DispatcherServlet;
 
 import javax.servlet.Servlet;
 
@@ -41,6 +44,12 @@ public class JettyServer implements InertialComponent {
 
         rootContext = new DefaultWebAppContext(contextHandlerCollection, ApplicationStartupUtils.getWarPath(), "/");
 
+        // register the spring mvc dispatcher to the root path
+        // if the same codebase has different shared components, we could refactor out the config location to
+        // base on component that we start
+        XmlWebApplicationContext appContext = new XmlWebApplicationContext();
+        appContext.setConfigLocation("/WEB-INF/core/monkey-core-servlet.xml");
+        mount("/*", new DispatcherServlet(appContext));
     }
 
     protected void mountStatusHandler(SimpleServletRequestHandler statusHandler) {
