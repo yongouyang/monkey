@@ -2,13 +2,18 @@ package org.monkey.web.object
 
 import org.monkey.common.utils.config.ApplicationStartupUtils
 
-class WelcomeApi extends ApiSupport {
+class WelcomeApi extends ApiSupport<WelcomeApi> {
 
-    public String welcome() {
-        return httpTransport.doGet("http://localhost:${ApplicationStartupUtils.monkeyHttpPort}/welcome")
+    public Maybe<String> welcome() {
+        return get("http://localhost:${ApplicationStartupUtils.monkeyHttpPort}/welcome", String)
     }
 
-    public Map<String, Object> welcome(String name) {
-        return marshaller.unmarshall(httpTransport.doGet("http://localhost:${ApplicationStartupUtils.monkeyHttpPort}/welcome/${name}"), Map)
+    public Maybe<Map> welcome(String name) {
+        return get("http://localhost:${ApplicationStartupUtils.monkeyHttpPort}/welcome/${name}", Map)
     }
+
+    public Maybe<Map> welcomeWithError() {
+        return get("http://localhost:${ApplicationStartupUtils.monkeyHttpPort}/welcomeWithError", Map)
+    }
+
 }

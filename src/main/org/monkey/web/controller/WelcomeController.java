@@ -1,6 +1,7 @@
 package org.monkey.web.controller;
 
 import org.joda.time.LocalDate;
+import org.monkey.common.exception.ResourceNotFoundException;
 import org.monkey.sample.model.Person;
 import org.monkey.sample.model.WelcomeMessage;
 import org.springframework.stereotype.Controller;
@@ -13,7 +14,7 @@ import java.math.BigDecimal;
 import java.util.Random;
 
 @Controller
-public class WelcomeController {
+public class WelcomeController extends ExceptionAwareController {
 
     @RequestMapping(value = "/welcome/{name}", method = RequestMethod.GET)
     @ResponseBody
@@ -31,10 +32,17 @@ public class WelcomeController {
 //        return new WelcomeMessage(person, new LocalDate(), "welcome to visit monkey website");
 //    }
 
+    @RequestMapping(value = "/welcomeWithError", method = RequestMethod.GET)
+    @ResponseBody
+    public WelcomeMessage welcomeWithError() {
+        throw new ResourceNotFoundException("some error occured");
+    }
+
     @RequestMapping(value = "/welcome", method = RequestMethod.GET)
     @ResponseBody
     public String welcome() {
         return "Welcome to Spring MVC";
     }
+
 
 }

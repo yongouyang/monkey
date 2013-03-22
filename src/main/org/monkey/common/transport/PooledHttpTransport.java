@@ -82,7 +82,7 @@ public class PooledHttpTransport implements HttpTransport {
         }, NO_RETRY);
     }
 
-    private void validateResponse(String requestUri, HttpResponse response) throws ServerException {
+    protected void validateResponse(String requestUri, HttpResponse response) throws ServerException {
         StatusLine status = response.getStatusLine();
         if (!isSuccess(status)) {
             throw new ServerException(requestUri, response);

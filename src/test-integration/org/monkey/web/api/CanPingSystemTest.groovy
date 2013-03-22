@@ -8,6 +8,6 @@ class CanPingSystemTest extends IntegrationTestSupport{
 
     @Test
     public void ping() {
-        assert statusMonitoringApi.ping() == [success: "success"]
+        assert statusMonitoringApi.ping().succeed() == [success: "success"]
     }
 }

@@ -10,17 +10,28 @@ class CanWelcomeTest extends IntegrationTestSupport {
 
     @Test
     public void welcome() {
-        assert welcomeApi.welcome() == "Welcome to Spring MVC"
+        assert welcomeApi.welcome().succeed() == "Welcome to Spring MVC"
     }
 
     @Test
     public void welcomeWithAName() {
-        def welcomed = welcomeApi.welcome("somebody")
+        def welcomed = welcomeApi.welcome("somebody").succeed()
         AssertUtils.assertMapMatches([
             message: "welcome to visit monkey website",
             data: null,
             date: new LocalDate().toString(),
             aPerson: Matchers.instanceOf(Map)
         ], welcomed)
+    }
+
+    @Test
+    public void welcomeWithError() {
+        def failed = welcomeApi.expectError(404).welcomeWithError().fail()
+        AssertUtils.assertMapMatches([
+            responseCode: 404,
+            type: "ResourceNotFoundException",
+            message: "some error occured",
+            stackTrace: Matchers.notNullValue(String)
+        ], failed)
     }
 }

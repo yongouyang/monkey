@@ -3,9 +3,9 @@ package org.monkey.web.object
 import org.monkey.common.utils.config.ApplicationStartupUtils
 
 
-class StatusMonitoringApi extends ApiSupport {
+class StatusMonitoringApi extends ApiSupport<StatusMonitoringApi> {
 
-    public Map ping() {
-        marshaller.unmarshall(httpTransport.doGet("http://localhost:${ApplicationStartupUtils.monkeyHttpPort}/ping"), Map)
+    public Maybe<Map> ping() {
+        return get("http://localhost:${ApplicationStartupUtils.monkeyHttpPort}/ping", Map)
     }
 }

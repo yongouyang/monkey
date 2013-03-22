@@ -20,23 +20,15 @@
     </context:component-scan>
 
     <mvc:annotation-driven>
+        <!-- below converters will be added on top of the default ones -->
         <mvc:message-converters>
-            <bean class="org.springframework.http.converter.ByteArrayHttpMessageConverter"/>
+            <!-- keep this here to handle String as the return, although this should be rare!-->
             <bean class="org.springframework.http.converter.StringHttpMessageConverter"/>
-
-            <!-- converts for all media types -->
-            <bean class="org.springframework.http.converter.ResourceHttpMessageConverter"/>
 
             <!-- converts to/from JSON -->
             <bean class="org.monkey.web.view.converter.JsonHttpMessageConverter">
                 <constructor-arg ref="jacksonHttpMessageConverter"/>
             </bean>
-
-            <!-- converts to/from a javax.xml.transform.Source -->
-            <bean class="org.springframework.http.converter.xml.SourceHttpMessageConverter"/>
-
-            <!-- converts to/from a MultiValueMap<String, String> -->
-            <bean class="org.springframework.http.converter.support.AllEncompassingFormHttpMessageConverter"/>
         </mvc:message-converters>
     </mvc:annotation-driven>
 
