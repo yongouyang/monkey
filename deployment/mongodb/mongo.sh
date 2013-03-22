@@ -9,8 +9,10 @@ mongod_pid=`ps -aef | grep ${mongod} | grep -v grep | awk '{print $2}'`
 mongod_port=`ps -aef | grep ${mongod} | grep -v grep | awk '{print $14}'`
 RETVAL=0
 
-usage() {
-    echo "Usage: $0 {start|stop|status} {environmentName} {replicaSetName} {dataNode|arbiter} [port]"
+function usage() {
+    echo "Usage: $0 start {environmentName} {replicaSetName} {dataNode|arbiter} [port]"
+    echo "       $0 stop"
+    echo "       $0 status"
     exit 1
 }
 
@@ -27,7 +29,7 @@ replicateSetName="$3"
 nodeType="$4"
 port="$5"
 
-status() {
+function status() {
     if [ ${mongod_pid} > 0 ]; then
           echo "MongoDB is already running on port ${mongod_port} as pid ${mongod_pid}"
     else
@@ -36,28 +38,28 @@ status() {
     exit 1
 }
 
-validateEnvironmentName() {
+function validateEnvironmentName() {
     if [ -z ${environmentName} ]; then
         echo "Environment name is missing"
         usage
     fi
 }
 
-validateReplicaSetName() {
+function validateReplicaSetName() {
     if [ -z ${replicateSetName} ]; then
         echo "Replica set name is missing"
         usage
     fi
 }
 
-validateNodeType() {
+function validateNodeType() {
     if [ -z ${nodeType} ]; then
         echo "Node type is missing"
         usage
     fi
 }
 
-updatePortNumber() {
+function updatePortNumber() {
     if [ -z ${port} ]; then
         # use default port if it is not provided
         port=6646
@@ -65,7 +67,7 @@ updatePortNumber() {
 }
 
 
-start() {
+function start() {
     if [ ${mongod_pid} > 0 ]; then
         echo "MongoDB is already running on port ${mongod_port}"
     else
@@ -81,7 +83,7 @@ start() {
     fi
 }
 
-stop() {
+function stop() {
     if [ ${mongod_pid} > 0  ]; then
         echo "Stopping MongoDB running on port ${mongod_port} as pid ${mongod_pid}"
         `kill -2 ${mongod_pid}`
@@ -105,3 +107,5 @@ case ${command} in
         *)
                 usage
 esac
+
+exit ${RETVAL}
