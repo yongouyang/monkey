@@ -40,6 +40,96 @@ Setup of a Deployment Environment (unix / linux)
         youyang@monkey-dev-01:/app/monkey/storage/mongodb> mkdir -p /app/monkey/storage/mongodb/data/log
         youyang@monkey-dev-01:/app/monkey/storage/mongodb> mkdir -p /app/monkey/storage/mongodb/data/config
     
-    create a symbolic link to the mongodb binary `youyang@monkey-dev-01:/app/monkey/storage/mongodb> ln -s mongodb-linux-x86_64-2.4.0 mongodb-distribution`       
+    create a symbolic link to the mongodb binary `youyang@monkey-dev-01:/app/monkey/storage/mongodb> ln -s mongodb-linux-x86_64-2.4.0 mongodb-distribution`     
+    
+    download the start/stop script for mongodb `youyang@monkey-dev-01:/app/monkey/storage/mongodb> wget http://github.com/yongouyang/monkey/blob/master/deployment/mongodb/mongo.sh`
+    
+    change mongo.sh permission `youyang@monkey-dev-01:/app/monkey/storage/mongodb> chmod 700 mongo.sh`
+    
+    create a private key file used for cluster authentication
+    
+        youyang@monkey-dev-01:/app/monkey/storage/mongodb> echo "not for production" >>  keyFile.txt
+        youyang@monkey-dev-01:/app/monkey/storage/mongodb> chmod 600 keyFile.txt 
+    
+    start up a MongoDB data node in replica set mode `youyang@monkey-dev-01:/app/monkey/storage/mongodb> ./mongo.sh start DEVAPAC dataNode` , which will by default start up on port 6646, unless otherwise specified
+    
+    initialise the replica set config and add an admin user to the admin DB:
+    
+        youyang@monkey-dev-01:/app/monkey/storage/mongodb> mongodb-distribution/bin/mongo --port 6646
+        MongoDB shell version: 2.4.0
+        connecting to: 127.0.0.1:6646/test
+        > rs.status()
+        {
+                "startupStatus" : 3,
+                "info" : "run rs.initiate(...) if not yet done for the set",
+                "ok" : 0,
+                "errmsg" : "can't get local.system.replset config from self or any seed (EMPTYCONFIG)"
+        }
+        > rs.initiate()
+        {
+                "info2" : "no configuration explicitly specified -- making one",
+                "me" : "monkey-dev-01:6646",
+                "info" : "Config now saved locally.  Should come online in about a minute.",
+                "ok" : 1
+        }
+        > rs.status()
+        {
+                "set" : "DEVAPAC",
+                "date" : ISODate("2013-03-25T04:55:52Z"),
+                "myState" : 1,
+                "members" : [
+                        {
+                                "_id" : 0,
+                                "name" : "monkey-dev-01:6646",
+                                "health" : 1,
+                                "state" : 1,
+                                "stateStr" : "PRIMARY",
+                                "uptime" : 197,
+                                "optime" : {
+                                        "t" : 1364187312,
+                                        "i" : 1
+                                },
+                                "optimeDate" : ISODate("2013-03-25T04:55:12Z"),
+                                "self" : true
+                        }
+                ],
+                "ok" : 1
+        }
+        DEVAPAC:PRIMARY> use admin
+        switched to db admin
+        DEVAPAC:PRIMARY> db.addUser("adminUser","adminPass")
+        {
+                "user" : "adminUser",
+                "readOnly" : false,
+                "pwd" : "873a9323c57ae73c0c7dd7da7efa1d12",
+                "_id" : ObjectId("514fd95a90fd44ce267505d1")
+        }
+        > db.auth("adminUser","adminPass")
+        1
+        
+    continue to add readWrite and readOnly users to the DB of the application, named `monkey-youyang-DEVAPAC`
+    
+        DEVAPAC:PRIMARY> use monkey-youyang-DEVAPAC
+        switched to db monkey-youyang-DEVAPAC
+        DEVAPAC:PRIMARY> db.addUser("writeUser","writePass")
+        {
+                "user" : "writeUser",
+                "readOnly" : false,
+                "pwd" : "0a237881a3f575ee4d34d94e63a55832",
+                "_id" : ObjectId("514fda1290fd44ce267505d2")
+        }
+        DEVAPAC:PRIMARY> db.addUser({user:"readUser",pwd:"readPass",roles:["read"]})
+        {
+                "user" : "readUser",
+                "pwd" : "10413e245468b315d524d9db3025a2e7",
+                "roles" : [
+                        "read"
+                ],
+                "_id" : ObjectId("514fdcab90fd44ce267505d3")
+        }
+
+
+    
+    
         
 (to be updated ...)
