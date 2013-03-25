@@ -2,8 +2,6 @@ package org.monkey.common.transport
 
 import org.junit.Before
 import org.junit.Test
-import org.junit.Ignore
-
 
 class HttpTransportSmokeTest {
 
@@ -11,7 +9,7 @@ class HttpTransportSmokeTest {
 
     @Before
     public void before() {
-      transport = new PooledHttpTransport()
+        transport = new PooledHttpTransport()
     }
 
     @Test
@@ -20,10 +18,9 @@ class HttpTransportSmokeTest {
         assert response.length() > 0
     }
 
-    @Ignore("need to investigate why it fails")
     @Test
     void doGetLargeResource() {
-        def resource = transport.doGetLargeResource("http://www.google.com.hk/images/srpr/nav_logo37.png")
+        def resource = transport.doGetLargeResource("http://www.apple.com")
 
         assert resource.read() > 0
     }
