@@ -21,7 +21,7 @@ public class PooledHttpTransport implements HttpTransport {
     private static final int NO_RETRY = 0;
 
 
-    private HttpClient httpClient;
+    protected HttpClient httpClient;
 
     public PooledHttpTransport() {
         this(new PooledHttpClient());
@@ -99,9 +99,10 @@ public class PooledHttpTransport implements HttpTransport {
         return request;
     }
 
-    private HttpPost createPostRequest(String uri, String payload, Header[] headers) throws IOException {
+    protected HttpPost createPostRequest(String uri, String payload, Header[] headers) throws IOException {
         HttpPost request = new HttpPost(uri);
         request.setHeaders(headers);
+        request.setHeader("Content-Type", "application/json");
         if (StringUtils.isNotBlank(payload)) request.setEntity(new StringEntity(payload));
         return request;
     }

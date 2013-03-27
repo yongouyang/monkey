@@ -1,5 +1,6 @@
 package org.monkey.common.utils.config
 
+import com.mongodb.ServerAddress
 import org.junit.Before
 import org.junit.Test
 
@@ -29,4 +30,35 @@ class SystemPreferencesImplTest {
     public void getReturnsNullWhenKeyIsNotFound() {
         assert preferences.get("key that doesn't exist") == null
     }
+
+    @Test
+    public void getMongoDbAddress() {
+        assert preferences.getMongoDbAddress() == new ServerAddress("monkey-dev-01", 6646)
+    }
+
+    @Test
+    public void getMongoDbDefaultDbName() {
+        assert preferences.getMongoDbDefaultDbName() == "monkey-youyang-TESTING"
+    }
+
+    @Test
+    public void getMongoDbWriteUser() {
+        assert preferences.getMongoDbWriteUser() == "writeUser"
+    }
+
+    @Test
+    public void getMongoDbWritePassword() {
+        assert preferences.getMongoDbWritePassword() == "writePass" as char[]
+    }
+
+    @Test
+    public void getMongoDbAdminUser() {
+        assert preferences.getMongoDbAdminUser() == "adminUser"
+    }
+
+    @Test
+    public void getMongoDbAdminPassword() {
+        assert preferences.getMongoDbAdminPassword() == "adminPass" as char[]
+    }
+
 }

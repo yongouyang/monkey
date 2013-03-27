@@ -20,8 +20,8 @@ import java.lang.reflect.Type;
 public class JacksonJsonMarshaller implements JsonMarshaller {
 
     private final ObjectMapper mapper;
-    final LocalDateMapper localDateMapper = new LocalDateMapper();
-    final DateTimeMapper dateTimeMapper = new DateTimeMapper();
+    private static final LocalDateMapper localDateMapper = new LocalDateMapper();
+    private static final DateTimeMapper dateTimeMapper = new DateTimeMapper();
 
     public JacksonJsonMarshaller() {
         this.mapper = new ObjectMapper();
@@ -134,7 +134,7 @@ public class JacksonJsonMarshaller implements JsonMarshaller {
     }
 
 
-    private Module buildCustomSerializerFactory() {
+    public static Module buildCustomSerializerFactory() {
         SimpleModule module = new SimpleModule();
 
         module.addSerializer(LocalDate.class, new JsonSerializer<LocalDate>() {
@@ -154,7 +154,7 @@ public class JacksonJsonMarshaller implements JsonMarshaller {
         return module;
     }
 
-    private Module buildCustomDeserializerFactory() {
+    public static Module buildCustomDeserializerFactory() {
         SimpleModule module = new SimpleModule();
 
         module.addDeserializer(LocalDate.class, new JsonDeserializer<LocalDate>() {
