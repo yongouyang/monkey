@@ -8,9 +8,9 @@ import org.monkey.monitoring.model.SwapStat;
 import java.util.List;
 
 public interface SystemStatCollector {
-    List<CpuStat> getCpuStats() throws SigarException;
+    List<CpuStat> getCpuStat() throws SigarException;
 
-    MemoryStat getMemStats() throws SigarException;
+    MemoryStat getMemStat() throws SigarException;
 
-    SwapStat getSwapStats() throws SigarException;
+    SwapStat getSwapStat() throws SigarException;
 }

@@ -2,12 +2,14 @@ package org.monkey.web.object
 
 import org.apache.http.Header
 import org.apache.http.message.BasicHttpResponse
+import org.monkey.common.utils.config.ApplicationStartupUtils
 
 import java.lang.reflect.Type
 
 class ApiSupport<T extends ApiSupport<T>> {
 
     protected TestOnlyHttpTransport httpTransport = new TestOnlyHttpTransport()
+    protected String baseUri_core = "http://localhost:${ApplicationStartupUtils.monkeyHttpPort}"
 
     public T expectError(int statusCode) {
         httpTransport.expectedStatusCode = statusCode

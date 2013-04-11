@@ -5,15 +5,15 @@ import org.monkey.common.utils.config.ApplicationStartupUtils
 class WelcomeApi extends ApiSupport<WelcomeApi> {
 
     public Maybe<String> welcome() {
-        return get("http://localhost:${ApplicationStartupUtils.monkeyHttpPort}/welcome", String)
+        return get("${baseUri_core}/welcome", String)
     }
 
     public Maybe<Map> welcome(String name) {
-        return get("http://localhost:${ApplicationStartupUtils.monkeyHttpPort}/welcome/${name}", Map)
+        return get("${baseUri_core}/welcome/${name}", Map)
     }
 
     public Maybe<Map> welcomeWithError() {
-        return get("http://localhost:${ApplicationStartupUtils.monkeyHttpPort}/welcomeWithError", Map)
+        return get("${baseUri_core}/welcomeWithError", Map)
     }
 
 }

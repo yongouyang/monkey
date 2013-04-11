@@ -12,7 +12,7 @@ class SystemStatCollectorImplTest {
 
     @Test
     public void getCpuStats() {
-        def stats = collector.cpuStats
+        def stats = collector.cpuStat
         assert stats != null
         assert stats.size() >= 1
 
@@ -37,7 +37,7 @@ class SystemStatCollectorImplTest {
 
     @Test
     public void canGetMemStats() {
-        def stat = collector.memStats
+        def stat = collector.memStat
         assert stat != null
 
         AssertUtils.assertProperties(stat, [
@@ -55,7 +55,7 @@ class SystemStatCollectorImplTest {
 
     @Test
     public void canGetSwapStats() {
-        def stat = collector.swapStats
+        def stat = collector.swapStat
         assert stat != null
 
         AssertUtils.assertProperties(stat, [
