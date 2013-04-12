@@ -84,11 +84,10 @@ class JacksonJsonMarshallerTest {
     public void canMarshallAndUnmarshallAPojoWithFinalFields() {
         def pojo = new MyPojoWithFinalFields("finalValue")
         pojo.value = "string1"
-        def json = """{"value":"string1","defaultFinalField":"default-final-field","customField":"finalValue"}"""
+        def json = """{"customField":"finalValue","value":"string1","defaultFinalField":"default-final-field"}"""
         assert marshaller.marshall(pojo) == json
 
-        //todo: investigate why it fails
-//        assert marshaller.unmarshall(json, MyPojoWithFinalFields) == pojo
+        assert marshaller.unmarshall(json, MyPojoWithFinalFields) == pojo
     }
 
     @Test
@@ -299,7 +298,7 @@ class JacksonJsonMarshallerTest {
         final String defaultFinalField = "default-final-field"
         final String customField = "custom-field"
 
-        @JsonCreator MyPojoWithFinalFields(@JsonProperty String finalValue) {
+        @JsonCreator MyPojoWithFinalFields(@JsonProperty("customField") String finalValue) {
             this.customField = finalValue
         }
     }
