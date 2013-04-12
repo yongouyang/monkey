@@ -25,7 +25,6 @@ class DailyPriceIntegrationTest extends IntegrationTestSupport {
         assert response.statusLine.statusCode == 201
         assert dailyPriceUri == "/DailyPrice?ricCode=0001.HK&tradeDate=2013-03-26"
 
-        // todo - need to fix the marshalling issue, where BigDecimal is marshalled into double
         def loaded = dailyPriceApi.find(dailyPriceUri).succeed()
         AssertUtils.assertMapMatches(dailyPrice, loaded)
     }

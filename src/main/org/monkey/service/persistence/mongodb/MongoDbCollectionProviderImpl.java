@@ -17,6 +17,7 @@ public class MongoDbCollectionProviderImpl implements MongoDbCollectionProvider 
 
     @Autowired
     public MongoDbCollectionProviderImpl(MongoDbProvider mongoDbProvider) {
+        // i wanna re-use the the custom deser and ser factories used by jackson here
         this(new Jongo(mongoDbProvider.getDefaultDb(), new JacksonMapper.Builder()
                 .registerModule(JacksonJsonMarshaller.buildCustomDeserializerFactory())
                 .registerModule(JacksonJsonMarshaller.buildCustomSerializerFactory())
