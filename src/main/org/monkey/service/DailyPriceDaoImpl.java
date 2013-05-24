@@ -1,7 +1,5 @@
 package org.monkey.service;
 
-import com.mongodb.WriteResult;
-import org.bson.types.ObjectId;
 import org.jongo.MongoCollection;
 import org.monkey.sample.model.SampleDailyPrice;
 import org.monkey.service.persistence.mongodb.MongoDbCollectionProvider;
@@ -24,7 +22,7 @@ public class DailyPriceDaoImpl implements DailyPriceDao {
     }
 
     @Override
-    public SampleDailyPrice find(String query) {
+    public SampleDailyPrice findOne(String query) {
         return dailyPriceCollection.findOne(query).as(SampleDailyPrice.class);
     }
 }

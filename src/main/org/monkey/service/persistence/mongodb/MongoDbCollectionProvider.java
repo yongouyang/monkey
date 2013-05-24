@@ -6,4 +6,6 @@ public interface MongoDbCollectionProvider {
     MongoCollection getWelcomesCollection();
 
     MongoCollection getDailyPriceCollection();
+
+    MongoCollection getSecurityCollection();
 }

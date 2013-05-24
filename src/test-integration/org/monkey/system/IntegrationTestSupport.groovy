@@ -4,6 +4,7 @@ import org.junit.BeforeClass
 import org.monkey.common.marshall.json.JacksonJsonMarshaller
 import org.monkey.common.marshall.json.JsonMarshaller
 import org.monkey.web.object.DailyPriceApi
+import org.monkey.web.object.StaticDataApi
 import org.monkey.web.object.StatusMonitoringApi
 import org.monkey.web.object.SystemStatApi
 import org.monkey.web.object.WelcomeApi
@@ -14,6 +15,7 @@ class IntegrationTestSupport {
     WelcomeApi welcomeApi = new WelcomeApi()
     DailyPriceApi dailyPriceApi = new DailyPriceApi()
     SystemStatApi systemStatApi = new SystemStatApi()
+    StaticDataApi staticDataApi = new StaticDataApi()
 
     JsonMarshaller marshaller = new JacksonJsonMarshaller()
 

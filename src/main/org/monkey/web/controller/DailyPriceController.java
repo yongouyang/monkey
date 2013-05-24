@@ -21,7 +21,7 @@ public class DailyPriceController extends ExceptionAwareController {
     @RequestMapping(value = "/DailyPrice", method = RequestMethod.GET)
     @ResponseBody
     public SampleDailyPrice viewByRicAndTradeDate(@RequestParam String ricCode, @RequestParam String tradeDate) {
-        return dailyPriceDao.find(String.format("{ricCode:'%s', tradeDate:'%s'}", ricCode, tradeDate));
+        return dailyPriceDao.findOne(String.format("{ricCode:'%s', tradeDate:'%s'}", ricCode, tradeDate));
     }
 
     @RequestMapping(value = "/DailyPrice", method = RequestMethod.POST, headers = "Content-Type=application/json")

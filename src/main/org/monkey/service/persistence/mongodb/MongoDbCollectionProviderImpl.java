@@ -47,4 +47,9 @@ public class MongoDbCollectionProviderImpl implements MongoDbCollectionProvider 
     public MongoCollection getDailyPriceCollection() {
         return jongo.getCollection("dailyPrice");
     }
+
+    @Override
+    public MongoCollection getSecurityCollection() {
+        return jongo.getCollection("security");
+    }
 }

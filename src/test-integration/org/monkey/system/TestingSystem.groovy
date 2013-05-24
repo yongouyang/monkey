@@ -3,7 +3,6 @@ package org.monkey.system
 import org.monkey.server.JettyServer
 import org.monkey.server.RunLocalServer
 import org.monkey.service.persistence.mongodb.MongoDbCollectionProviderImpl
-import org.monkey.service.persistence.mongodb.MongoDbProviderImpl
 
 class TestingSystem {
 
@@ -19,13 +18,16 @@ class TestingSystem {
     }
 
     private static void refreshMongoDb() {
-        def collectionProvider = (MongoDbCollectionProviderImpl) coreApplication.spring.getBean("mongoDbCollectionProviderImpl")
-        // drop collections from the default db
-        println "*** Refreshing MongoDb ***"
-        collectionProvider.welcomesCollection.drop()
-        collectionProvider.dailyPriceCollection.drop()
+        if (System.getProperty("refreshMongoDb", "false")) {
+            def collectionProvider = (MongoDbCollectionProviderImpl) coreApplication.spring.getBean("mongoDbCollectionProviderImpl")
+            // drop collections from the default db
+            println "*** Refreshing MongoDb ***"
+            collectionProvider.welcomesCollection.drop()
+            collectionProvider.dailyPriceCollection.drop()
 
-        // rebuild indices
+            // rebuild indices
+            collectionProvider.dailyPriceCollection.ensureIndex("{ricCode:1,tradeDate:1}", "{background:1,unique:1}")
+        }
     }
 
 
