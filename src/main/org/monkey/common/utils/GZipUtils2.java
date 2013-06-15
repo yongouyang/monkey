@@ -11,7 +11,7 @@ import java.util.zip.GZIPOutputStream;
 import static com.google.common.io.Closeables.closeQuietly;
 
 
-public class GZipUtils {
+public class GZipUtils2 {
 
     public static final Charset UTF8 = Charset.forName("UTF-8");
 
