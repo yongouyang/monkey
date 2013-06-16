@@ -14,7 +14,7 @@ import org.mockito.runners.MockitoJUnitRunner
 import static org.mockito.Mockito.when
 
 @RunWith(MockitoJUnitRunner.class)
-class GZipDecompressingHttpResponseInterceptor2Test {
+class GZipDecompressingHttpResponseInterceptorTest {
 
     @Mock HttpResponse response
 

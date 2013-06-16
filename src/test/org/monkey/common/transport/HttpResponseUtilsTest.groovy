@@ -6,7 +6,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mock
 import org.mockito.runners.MockitoJUnitRunner
-import org.monkey.common.utils.GZipUtils2
+import org.monkey.common.utils.GZipUtils
 
 import java.nio.charset.Charset
 
@@ -48,7 +48,7 @@ class HttpResponseUtilsTest {
     public void toStringWhenContentEncodingIsGZip() {
         def charset = Charset.forName("utf-8")
         def originalContent = "some content"
-        def gzipContent = GZipUtils2.compress(originalContent, charset)
+        def gzipContent = GZipUtils.compress(originalContent, charset)
 
         def entity = new BasicHttpEntity()
         entity.content = new BufferedInputStream(new ByteArrayInputStream(gzipContent))
@@ -77,7 +77,7 @@ class HttpResponseUtilsTest {
     public void toStreamWhenContentEncodingIsGZip() {
         def charset = Charset.forName("utf-8")
         def originalContent = "some content"
-        def gzipContent = GZipUtils2.compress(originalContent, charset)
+        def gzipContent = GZipUtils.compress(originalContent, charset)
 
         def entity = new BasicHttpEntity()
         entity.content = new BufferedInputStream(new ByteArrayInputStream(gzipContent))

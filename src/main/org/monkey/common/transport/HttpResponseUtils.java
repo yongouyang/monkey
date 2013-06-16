@@ -3,7 +3,7 @@ package org.monkey.common.transport;
 import com.google.common.collect.Maps;
 import org.apache.http.*;
 import org.apache.http.util.EntityUtils;
-import org.monkey.common.utils.GZipUtils2;
+import org.monkey.common.utils.GZipUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -40,7 +40,7 @@ public class HttpResponseUtils {
             HeaderElement[] headerElements = contentEncoding.getElements();
             for (HeaderElement headerElement : headerElements) {
                 if ("gzip".equalsIgnoreCase(headerElement.getName())) {
-                    return GZipUtils2.wrap(entity.getContent());
+                    return GZipUtils.wrap(entity.getContent());
                 }
             }
         }
@@ -50,12 +50,12 @@ public class HttpResponseUtils {
 
     private static String handleGZipResponse(HttpEntity entity) throws IOException {
         Charset charset = responseCharset(entity);
-        return GZipUtils2.decompress(entity.getContent(), charset);
+        return GZipUtils.decompress(entity.getContent(), charset);
     }
 
     private static Charset responseCharset(HttpEntity entity) {
         Header contentType = entity.getContentType();
-        Charset charset = GZipUtils2.UTF8;
+        Charset charset = GZipUtils.UTF8;
         if (contentType != null) {
             String value = contentType.getValue(); // sample content-type: text/plain; charset=iso-8859-1
             Pattern pattern = Pattern.compile("(.*)charset=([a-zA-Z0-9-]*?)");
